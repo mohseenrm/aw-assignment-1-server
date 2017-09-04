@@ -4,7 +4,7 @@ var argv = require('yargs').argv;
 var cors = require('cors');
 var express = require('express');
 var bodyParser = require('body-parser');
-var path = require('path');
+// const path = require('path');
 
 var app = express();
 
@@ -14,6 +14,14 @@ app.use(bodyParser.json());
 app.post('/auth', function (request, response) {
   console.log('Processing auth request....');
   console.log('request: ', request.body);
+  response.json({
+    data: 'Hola!!'
+  });
+});
+
+app.get('/', function (request, response) {
+  console.log('got / request');
+  response.send('hello');
 });
 
 app.set('port', process.env.PORT || argv.port || 8080);
