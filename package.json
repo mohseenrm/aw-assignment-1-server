@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "\"node_modules/.bin/babel\" src -d build",
     "compile:watch": "\"node_modules/.bin/babel\" src -d build -w",
-    "dev:server": "node \"src/server.js\" --port=9001",
+    "dev:server": "node \"src/server.js\" --port=9008",
     "lint": "\"node_modules/.bin/eslint\" src",
     "lint:fix": "\"node_modules/.bin/eslint\" src --fix",
     "start": "node \"build/server.js\" --port=9001"

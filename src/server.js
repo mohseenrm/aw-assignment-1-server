@@ -7,13 +7,14 @@ const mongo = require('mongodb').MongoClient;
 // const path = require('path');
 
 let db = null;
+let server = null;
 
 const mostSecureUrl = 'mongodb://heroku_9ntks6wl:48d9flnlndmqsqdccqbfp2goko@ds123084.mlab.com:23084/heroku_9ntks6wl';
 
 const app = express();
 
-app.use(cors());
 app.use(bodyParser.json());
+app.use(cors());
 
 mongo.connect(mostSecureUrl, (err, database) => {
   if (err) { console.log('Error connecting to database!!'); }
@@ -23,9 +24,60 @@ mongo.connect(mostSecureUrl, (err, database) => {
 app.post('/auth/login', (request, response) => {
   console.log('Processing auth request....');
   console.log('request: ', request.body);
-  response.json({
-    data: 'Hola!!'
-  });
+
+  const query = {
+    username: request.body.username,
+    password: request.body.password
+  };
+  if (db) {
+    db.collection('users').find(query).toArray((err, items) => {
+      console.log('Items: ', items);
+      // found user
+      if (items.length !== 0) {
+        response.json({
+          auth: true,
+          username: query.username
+        });
+      } else {
+        response.json({
+          auth: false
+        });
+      }
+    });
+  } else {
+    response.json({
+      auth: false
+    });
+  }
+});
+
+app.post('/auth/create', (request, response) => {
+  if (db) {
+    const newUser = {
+      username: request.body.username,
+      password: request.body.password
+    };
+    db.collection('users').insertOne(
+      newUser,
+      (error, result) => {
+        if (error) {
+          console.warn('Could not create new user: ', newUser.username);
+          response.json({
+            newAccount: false
+          });
+        } else {
+          response.json({
+            newAccount: true,
+            username: result.ops[0].username
+          });
+        }
+      }
+    );
+  } else {
+    response.json({
+      newAccount: false
+    });
+  }
 });
 
 app.get('/', (request, response) => {
@@ -35,16 +87,20 @@ app.get('/', (request, response) => {
 
 app.set('port', process.env.PORT || argv.port || 8080);
 
-app.listen(app.get('port'), () => {
+server = app.listen(app.get('port'), () => {
   console.log(`server listening on port : ${app.get('port')}`);
 });
 
 const shutdown = () => {
-  console.log('Killing the server...');
+  console.info('Killing the server...');
   if (db) {
-    console.log('Closing connection with database...');
+    console.info('Closing connection with database...');
     db.close();
   }
+  server.close(() => {
+    console.info('Shutting down server...');
+    process.exit();
+  });
 };
 
 process.on('SIGTERM', shutdown);
