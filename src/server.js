@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/auth', (request, response) => {
+app.post('/auth/login', (request, response) => {
   console.log('Processing auth request....');
   console.log('request: ', request.body);
   response.json({
