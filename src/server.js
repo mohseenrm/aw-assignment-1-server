@@ -99,6 +99,24 @@ app.post('/update/history', (request, response) => {
   if (db) {
     console.info('Update History: ', request.body);
 
+    db.collection('history').updateOne(
+      {
+        username: request.body.username
+      },
+      {
+        $push: {
+          events: request.body.events
+        }
+      },
+      (error, result) => {
+        if (error) {
+          console.warn('Error updating history to database: ', error);
+        } else {
+          console.info('User history updated: ', result);
+        }
+      }
+    );
+
     response.json({
       updateHistory: true
     });
