@@ -105,7 +105,7 @@ app.post('/update/history', (request, response) => {
       },
       {
         $push: {
-          events: request.body.events
+          events: { $each: request.body.events }
         }
       },
       (error, result) => {

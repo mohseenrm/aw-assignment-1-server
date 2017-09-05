@@ -101,7 +101,7 @@ app.post('/update/history', function (request, response) {
       username: request.body.username
     }, {
       $push: {
-        events: request.body.events
+        events: { $each: request.body.events }
       }
     }, function (error, result) {
       if (error) {
