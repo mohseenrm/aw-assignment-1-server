@@ -80,6 +80,20 @@ app.post('/auth/create', (request, response) => {
   }
 });
 
+app.post('/update/history', (request, response) => {
+  console.log('Processing update history request...');
+  if (db) {
+    console.info('Update History: ', request.body);
+    response.json({
+      updateHistory: true
+    });
+  } else {
+    response.json({
+      updateHistory: false
+    });
+  }
+});
+
 app.get('/', (request, response) => {
   console.log('got / request');
   response.send('hello');
