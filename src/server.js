@@ -4,7 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const mongo = require('mongodb').MongoClient;
-// const path = require('path');
+
+const generateLoginEvent = require('./utils');
 
 let db = null;
 let server = null;
@@ -23,7 +24,7 @@ mongo.connect(mostSecureUrl, (err, database) => {
 
 app.post('/auth/login', (request, response) => {
   console.log('Processing auth request....');
-  console.log('request: ', request.body);
+  // console.log('request: ', request.body);
 
   const query = {
     username: request.body.username,
@@ -31,7 +32,7 @@ app.post('/auth/login', (request, response) => {
   };
   if (db) {
     db.collection('users').find(query).toArray((err, items) => {
-      console.log('Items: ', items);
+      // console.log('Items: ', items);
       // found user
       if (items.length !== 0) {
         response.json({
@@ -44,6 +45,26 @@ app.post('/auth/login', (request, response) => {
         });
       }
     });
+
+    const event = generateLoginEvent();
+
+    db.collection('history').updateOne(
+      {
+        username: query.username
+      },
+      {
+        $push: {
+          activity: event
+        }
+      },
+      (error, result) => {
+        if (error) {
+          console.warn('Error updating history to database: ', error);
+        } else {
+          console.info('User history updated: ', result);
+        }
+      }
+    );
   } else {
     response.json({
       auth: false

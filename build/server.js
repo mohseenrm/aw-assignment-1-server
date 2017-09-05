@@ -6,7 +6,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var mongo = require('mongodb').MongoClient;
-// const path = require('path');
+
+var generateLoginEvent = require('./utils');
 
 var db = null;
 var server = null;
@@ -27,7 +28,7 @@ mongo.connect(mostSecureUrl, function (err, database) {
 
 app.post('/auth/login', function (request, response) {
   console.log('Processing auth request....');
-  console.log('request: ', request.body);
+  // console.log('request: ', request.body);
 
   var query = {
     username: request.body.username,
@@ -35,7 +36,7 @@ app.post('/auth/login', function (request, response) {
   };
   if (db) {
     db.collection('users').find(query).toArray(function (err, items) {
-      console.log('Items: ', items);
+      // console.log('Items: ', items);
       // found user
       if (items.length !== 0) {
         response.json({
@@ -46,6 +47,22 @@ app.post('/auth/login', function (request, response) {
         response.json({
           auth: false
         });
+      }
+    });
+
+    var event = generateLoginEvent();
+
+    db.collection('history').updateOne({
+      username: query.username
+    }, {
+      $push: {
+        activity: event
+      }
+    }, function (error, result) {
+      if (error) {
+        console.warn('Error updating history to database: ', error);
+      } else {
+        console.info('User history updated: ', result);
       }
     });
   } else {
