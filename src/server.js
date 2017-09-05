@@ -1,3 +1,5 @@
+import { generateLoginEvent } from './utils';
+
 const argv = require('yargs').argv;
 const cors = require('cors');
 const express = require('express');
@@ -5,7 +7,6 @@ const bodyParser = require('body-parser');
 
 const mongo = require('mongodb').MongoClient;
 
-const generateLoginEvent = require('./utils');
 
 let db = null;
 let server = null;

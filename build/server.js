@@ -1,13 +1,13 @@
 'use strict';
 
+var _utils = require('./utils');
+
 var argv = require('yargs').argv;
 var cors = require('cors');
 var express = require('express');
 var bodyParser = require('body-parser');
 
 var mongo = require('mongodb').MongoClient;
-
-var generateLoginEvent = require('./utils');
 
 var db = null;
 var server = null;
@@ -50,7 +50,7 @@ app.post('/auth/login', function (request, response) {
       }
     });
 
-    var event = generateLoginEvent();
+    var event = (0, _utils.generateLoginEvent)();
 
     db.collection('history').updateOne({
       username: query.username
