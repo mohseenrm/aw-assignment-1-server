@@ -61,6 +61,7 @@ app.post('/auth/create', function (request, response) {
       username: request.body.username,
       password: request.body.password
     };
+    // add user to user collection
     db.collection('users').insertOne(newUser, function (error, result) {
       if (error) {
         console.warn('Could not create new user: ', newUser.username);
@@ -74,6 +75,16 @@ app.post('/auth/create', function (request, response) {
         });
       }
     });
+    // add user to history collection
+    db.collection('history').insertOne({
+      username: newUser.username
+    }, function (error, result) {
+      if (error) {
+        console.warn('Could not create new user: ', newUser.username);
+      } else {
+        console.info('Update History result: ', result);
+      }
+    });
   } else {
     response.json({
       newAccount: false
@@ -85,6 +96,7 @@ app.post('/update/history', function (request, response) {
   console.log('Processing update history request...');
   if (db) {
     console.info('Update History: ', request.body);
+
     response.json({
       updateHistory: true
     });
