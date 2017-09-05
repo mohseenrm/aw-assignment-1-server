@@ -33,7 +33,6 @@ app.post('/auth/login', (request, response) => {
   };
   if (db) {
     db.collection('users').find(query).toArray((err, items) => {
-      // console.log('Items: ', items);
       // found user
       if (items.length !== 0) {
         response.json({
@@ -145,6 +144,28 @@ app.post('/update/history', (request, response) => {
   } else {
     response.json({
       updateHistory: false
+    });
+  }
+});
+
+app.post('/get/history', (request, response) => {
+  console.log('Processing get history request...');
+  if (db) {
+    console.info('Get History: ', request.body);
+
+    db.collection('history').find({ username: request.body.username }).toArray((err, items) => {
+      console.log('Items: ', items);
+      // found history
+      if (items.length !== 0) {
+        response.json({
+          getHistory: true,
+          events: items
+        });
+      } else {
+        response.json({
+          getHistory: false
+        });
+      }
     });
   }
 });
