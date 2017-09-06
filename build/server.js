@@ -139,14 +139,18 @@ app.post('/update/history', function (request, response) {
   }
 });
 
+/* db.collection('history').find({
+  username: request.body.username,
+  events: {
+    className: { $in: cssClasses }
+  }
+}) */
+
 app.post('/get/history', function (request, response) {
   console.log('Processing get history request...');
   if (db) {
     db.collection('history').find({
-      username: request.body.username,
-      events: {
-        className: { $in: cssClasses }
-      }
+      username: request.body.username
     }).toArray(function (err, items) {
       console.log('Items: ', items);
       // found history
