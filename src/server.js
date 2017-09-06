@@ -151,8 +151,6 @@ app.post('/update/history', (request, response) => {
 app.post('/get/history', (request, response) => {
   console.log('Processing get history request...');
   if (db) {
-    console.info('Get History: ', request.body);
-
     db.collection('history').find({ username: request.body.username }).toArray((err, items) => {
       console.log('Items: ', items);
       // found history
@@ -169,6 +167,38 @@ app.post('/get/history', (request, response) => {
     });
   }
 });
+
+/*
+app.post('/logout', (request, response) => {
+  console.log('Processing logout request...');
+  if (db) {
+    db.collection('history').updateOne(
+      {
+        username: request.body.username
+      },
+      {
+        $push: {
+          events: { $each: request.body.events }
+        }
+      },
+      (error, result) => {
+        if (error) {
+          console.warn('Error logging out: ', error);
+        } else {
+          console.info('User history updated: ', result);
+        }
+      }
+    );
+
+    response.json({
+      updateHistory: true
+    });
+  } else {
+    response.json({
+      updateHistory: false
+    });
+  }
+}); */
 
 app.get('/', (request, response) => {
   console.log('got / request');
