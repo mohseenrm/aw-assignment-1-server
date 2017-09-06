@@ -157,32 +157,6 @@ app.post('/get/history', function (request, response) {
   }
 });
 
-app.post('/logout', function (request, response) {
-  console.log('Processing logout request...');
-
-  if (db) {
-    var event = (0, _utils.generateLogoutEvent)();
-
-    db.collection('history').updateOne({
-      username: request.body.username
-    }, {
-      $push: {
-        activity: event
-      }
-    }, function (error, result) {
-      if (error) {
-        console.warn('Error updating history to database: ', error);
-      } else {
-        console.info('User history updated: ', result);
-      }
-    });
-  } else {
-    response.json({
-      updateHistory: false
-    });
-  }
-});
-
 app.get('/', function (request, response) {
   console.log('got / request');
   response.send('hello');

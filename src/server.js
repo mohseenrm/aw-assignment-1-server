@@ -168,37 +168,6 @@ app.post('/get/history', (request, response) => {
   }
 });
 
-
-app.post('/logout', (request, response) => {
-  console.log('Processing logout request...');
-
-  if (db) {
-    const event = generateLogoutEvent();
-
-    db.collection('history').updateOne(
-      {
-        username: request.body.username
-      },
-      {
-        $push: {
-          activity: event
-        }
-      },
-      (error, result) => {
-        if (error) {
-          console.warn('Error updating history to database: ', error);
-        } else {
-          console.info('User history updated: ', result);
-        }
-      }
-    );
-  } else {
-    response.json({
-      updateHistory: false
-    });
-  }
-});
-
 app.get('/', (request, response) => {
   console.log('got / request');
   response.send('hello');
