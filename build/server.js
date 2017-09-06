@@ -140,8 +140,6 @@ app.post('/update/history', function (request, response) {
 app.post('/get/history', function (request, response) {
   console.log('Processing get history request...');
   if (db) {
-    console.info('Get History: ', request.body);
-
     db.collection('history').find({ username: request.body.username }).toArray(function (err, items) {
       console.log('Items: ', items);
       // found history
@@ -155,6 +153,31 @@ app.post('/get/history', function (request, response) {
           getHistory: false
         });
       }
+    });
+  }
+});
+
+app.post('/logout', function (request, response) {
+  console.log('Processing logout request...');
+  if (db) {
+    var event = (0, _utils.generateLogoutEvent)();
+
+    db.collection('history').updateOne({
+      username: request.body.username
+    }, {
+      $push: {
+        activity: event
+      }
+    }, function (error, result) {
+      if (error) {
+        console.warn('Error updating history to database: ', error);
+      } else {
+        console.info('User history updated: ', result);
+      }
+    });
+  } else {
+    response.json({
+      updateHistory: false
     });
   }
 });

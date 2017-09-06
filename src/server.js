@@ -1,4 +1,4 @@
-import { generateLoginEvent } from './utils';
+import { generateLoginEvent, generateLogoutEvent } from './utils';
 
 const argv = require('yargs').argv;
 const cors = require('cors');
@@ -172,8 +172,8 @@ app.post('/get/history', (request, response) => {
 app.post('/logout', (request, response) => {
   console.log('Processing logout request...');
   if (db) {
-    const event = generateLoginEvent();
-    
+    const event = generateLogoutEvent();
+
     db.collection('history').updateOne(
       {
         username: request.body.username

@@ -9,3 +9,10 @@ var generateLoginEvent = exports.generateLoginEvent = function generateLoginEven
     timeStamp: new Date().getTime()
   };
 };
+
+var generateLogoutEvent = exports.generateLogoutEvent = function generateLogoutEvent() {
+  return {
+    type: 'logout',
+    timeStamp: new Date().getTime()
+  };
+};
