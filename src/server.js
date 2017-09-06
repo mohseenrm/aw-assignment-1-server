@@ -171,6 +171,7 @@ app.post('/get/history', (request, response) => {
 
 app.post('/logout', (request, response) => {
   console.log('Processing logout request...');
+
   if (db) {
     const event = generateLogoutEvent();
 
