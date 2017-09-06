@@ -1,4 +1,4 @@
-import { generateLoginEvent, generateLogoutEvent } from './utils';
+import { generateLoginEvent } from './utils';
 
 const argv = require('yargs').argv;
 const cors = require('cors');
@@ -10,12 +10,6 @@ const mongo = require('mongodb').MongoClient;
 
 let db = null;
 let server = null;
-
-const cssClasses = [
-  'question-hyperlink',
-  'vote-up-off',
-  'js-show-link comments-link'
-];
 
 const mostSecureUrl = 'mongodb://heroku_9ntks6wl:48d9flnlndmqsqdccqbfp2goko@ds123084.mlab.com:23084/heroku_9ntks6wl';
 

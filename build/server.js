@@ -12,8 +12,6 @@ var mongo = require('mongodb').MongoClient;
 var db = null;
 var server = null;
 
-var cssClasses = ['question-hyperlink', 'vote-up-off', 'js-show-link comments-link'];
-
 var mostSecureUrl = 'mongodb://heroku_9ntks6wl:48d9flnlndmqsqdccqbfp2goko@ds123084.mlab.com:23084/heroku_9ntks6wl';
 
 var app = express();
