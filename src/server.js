@@ -11,6 +11,12 @@ const mongo = require('mongodb').MongoClient;
 let db = null;
 let server = null;
 
+const cssClasses = [
+  'question-hyperlink',
+  'vote-up-off',
+  'js-show-link comments-link'
+];
+
 const mostSecureUrl = 'mongodb://heroku_9ntks6wl:48d9flnlndmqsqdccqbfp2goko@ds123084.mlab.com:23084/heroku_9ntks6wl';
 
 const app = express();
@@ -151,7 +157,12 @@ app.post('/update/history', (request, response) => {
 app.post('/get/history', (request, response) => {
   console.log('Processing get history request...');
   if (db) {
-    db.collection('history').find({ username: request.body.username }).toArray((err, items) => {
+    db.collection('history').find({
+      username: request.body.username,
+      events: {
+        className: { $in: cssClasses }
+      }
+    }).toArray((err, items) => {
       console.log('Items: ', items);
       // found history
       if (items.length !== 0) {
