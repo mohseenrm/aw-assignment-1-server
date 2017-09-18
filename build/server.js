@@ -174,25 +174,53 @@ app.post('/get/stats', function (request, response) {
     }).toArray(function (err, items) {
       // eslint-disable-next-line
       var stats = {
-        pages: 0,
-        bounties: 0,
-        questions: 0,
-        tags: 0
+        global: {
+          pages: 0,
+          bounties: 0,
+          questions: 0,
+          tags: 0
+        },
+        user: {
+          pages: 0,
+          bounties: 0,
+          questions: 0,
+          tags: 0
+        }
       };
       items.forEach(function (userData) {
+        if (userData.username === request.body.username) {
+          userData.events.forEach(function (event) {
+            switch (event.className) {
+              case 'question-hyperlink':
+                stats.user.questions += 1;
+                break;
+              case 'page-numbers':
+                stats.user.pages += 1;
+                break;
+              case 'bounties-tab':
+                stats.user.bounties += 1;
+                break;
+              case 'post-tag':
+                stats.user.tags += 1;
+                break;
+              default:
+                break;
+            }
+          });
+        }
         userData.events.forEach(function (event) {
           switch (event.className) {
             case 'question-hyperlink':
-              stats.questions += 1;
+              stats.global.questions += 1;
               break;
             case 'page-numbers':
-              stats.pages += 1;
+              stats.global.pages += 1;
               break;
             case 'bounties-tab':
-              stats.bounties += 1;
+              stats.global.bounties += 1;
               break;
             case 'post-tag':
-              stats.tags += 1;
+              stats.global.tags += 1;
               break;
             default:
               break;
