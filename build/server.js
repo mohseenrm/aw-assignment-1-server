@@ -176,7 +176,8 @@ app.post('/get/stats', function (request, response) {
       // found history
       if (items.length !== 0) {
         response.json({
-          getStats: true
+          getStats: true,
+          items: items
         });
       } else {
         response.json({
