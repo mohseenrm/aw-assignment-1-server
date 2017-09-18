@@ -183,12 +183,38 @@ app.post('/get/stats', (request, response) => {
     db.collection('history').find({
       events: { $exists: true }
     }).toArray((err, items) => {
-      console.log('Items: ', items);
+      // eslint-disable-next-line
+      let stats = {
+        pages: 0,
+        bounties: 0,
+        questions: 0,
+        tags: 0
+      };
+      items.forEach((userData) => {
+        userData.events.forEach((event) => {
+          switch (event.className) {
+            case 'question-hyperlink':
+              stats.questions += 1;
+              break;
+            case 'page-numbers':
+              stats.pages += 1;
+              break;
+            case 'bounties-tab':
+              stats.bounties += 1;
+              break;
+            case 'post-tag':
+              stats.tags += 1;
+              break;
+            default:
+              break;
+          }
+        });
+      });
       // found history
       if (items.length !== 0) {
         response.json({
           getStats: true,
-          items,
+          stats,
         });
       } else {
         response.json({
