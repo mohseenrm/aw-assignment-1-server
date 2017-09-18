@@ -178,7 +178,7 @@ app.post('/get/history', (request, response) => {
 });
 
 app.post('/get/stats', (request, response) => {
-  console.log('Processing get Stats request...');
+  console.log('Processing get stats request...');
   if (db) {
     db.collection('history').find({
       events: { $exists: true }

@@ -166,6 +166,27 @@ app.post('/get/history', function (request, response) {
   }
 });
 
+app.post('/get/stats', function (request, response) {
+  console.log('Processing get stats request...');
+  if (db) {
+    db.collection('history').find({
+      events: { $exists: true }
+    }).toArray(function (err, items) {
+      console.log('Items: ', items);
+      // found history
+      if (items.length !== 0) {
+        response.json({
+          getStats: true
+        });
+      } else {
+        response.json({
+          getStats: false
+        });
+      }
+    });
+  }
+});
+
 app.get('/', function (request, response) {
   console.log('got / request');
   response.send('hello');
