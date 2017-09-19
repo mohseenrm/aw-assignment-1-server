@@ -216,7 +216,7 @@ app.post('/get/stats', (request, response) => {
               case 'post-tag':
                 stats.user.tags += 1;
                 break;
-              case 'vote-up-on':
+              case 'vote-up-off':
                 stats.user.votes += 1;
                 break;
               default:
@@ -238,7 +238,7 @@ app.post('/get/stats', (request, response) => {
             case 'post-tag':
               stats.global.tags += 1;
               break;
-            case 'vote-up-on':
+            case 'vote-up-off':
               stats.global.votes += 1;
               break;
             default:
