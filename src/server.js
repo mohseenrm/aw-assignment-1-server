@@ -191,6 +191,7 @@ app.post('/get/stats', (request, response) => {
           questions: 0,
           tags: 0,
           votes: 0,
+          totalUsers: 0,
         },
         user: {
           pages: 0,
@@ -200,6 +201,7 @@ app.post('/get/stats', (request, response) => {
           votes: 0,
         }
       };
+      stats.global.totalUsers = items.length;
       items.forEach((userData) => {
         if (userData.username === request.body.username) {
           userData.events.forEach((event) => {

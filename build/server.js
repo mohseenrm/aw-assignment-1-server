@@ -179,7 +179,8 @@ app.post('/get/stats', function (request, response) {
           bounties: 0,
           questions: 0,
           tags: 0,
-          votes: 0
+          votes: 0,
+          totalUsers: 0
         },
         user: {
           pages: 0,
@@ -189,6 +190,7 @@ app.post('/get/stats', function (request, response) {
           votes: 0
         }
       };
+      stats.global.totalUsers = items.length;
       items.forEach(function (userData) {
         if (userData.username === request.body.username) {
           userData.events.forEach(function (event) {
