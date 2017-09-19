@@ -178,13 +178,15 @@ app.post('/get/stats', function (request, response) {
           pages: 0,
           bounties: 0,
           questions: 0,
-          tags: 0
+          tags: 0,
+          votes: 0
         },
         user: {
           pages: 0,
           bounties: 0,
           questions: 0,
-          tags: 0
+          tags: 0,
+          votes: 0
         }
       };
       items.forEach(function (userData) {
@@ -202,6 +204,9 @@ app.post('/get/stats', function (request, response) {
                 break;
               case 'post-tag':
                 stats.user.tags += 1;
+                break;
+              case 'vote-up-on':
+                stats.user.votes += 1;
                 break;
               default:
                 break;
@@ -221,6 +226,9 @@ app.post('/get/stats', function (request, response) {
               break;
             case 'post-tag':
               stats.global.tags += 1;
+              break;
+            case 'vote-up-on':
+              stats.global.votes += 1;
               break;
             default:
               break;
