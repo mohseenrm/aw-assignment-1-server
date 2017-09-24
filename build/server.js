@@ -137,6 +137,13 @@ app.post('/update/history', function (request, response) {
   }
 });
 
+/* db.collection('history').find({
+  username: request.body.username,
+  events: {
+    className: { $in: cssClasses }
+  }
+}) */
+
 app.post('/get/history', function (request, response) {
   console.log('Processing get history request...');
   if (db) {
